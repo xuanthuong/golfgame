@@ -1,13 +1,13 @@
-# import json
-# from play_new_game import play_game
+import json
+from play_new_game import play_game
 
-# hole = "Par3"
-# user_name = "userA"
+hole = "Par3"
+user_name = "userA"
 
-# game = play_game(hole, user_name)
-# game_data = game.start_game()
-# if game_data:
-#   print(json.dumps(game_data), 200)
+game = play_game(hole, user_name)
+game_data = game.start_game()
+if game_data:
+  print(json.dumps(game_data), 200)
 
 
 # # Mongo test
@@ -30,10 +30,10 @@
 # inserted_ids = user_level.bulk_insert(user_levels_collection, [user1, user2, user3]) # Staticmethod
 # print ('Inserted Ids: ', inserted_ids)
 
-# 2nd Mongo test
-from models_service import get_levels
-from user_level_model import user_level
-import random
+# # 2nd Mongo test
+# from models_service import get_levels
+# from user_level_model import user_level
+# import random
 
-user = user_level('ThuongTran', [random.randint(1,11) for r in range(10)])
-print(get_levels(user))
+# user = user_level('ThuongTran', [random.randint(1,11) for r in range(10)])
+# print(get_levels(user))

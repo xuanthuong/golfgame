@@ -6,8 +6,13 @@
 from pymongo import MongoClient
 from user_level_model import  user_level
 import random
+import os
 
-client = MongoClient('localhost', 27017)
+MONGO_URL = os.environ.get('MONGO_URL')
+if not MONGO_URL:
+    MONGO_URL = "mongodb://localhost:27017";
+
+client = MongoClient(MONGO_URL)
 db = client.golfgame
 user_levels_collection = db.user_levels
 

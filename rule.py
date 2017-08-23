@@ -4,59 +4,27 @@
 # Date: 21 Aug 2017
 
 import random
+import json
 
-TRANSITION_PROB = {
-  "Par3": {
-    "driving_shot": {
-      "approach": 0.5,
-      "bunker": 0.495,
-      "water": 0.495,
-      "ruff": 0.495,
-      "end": 0.005,
-    },
-    "approach": {
-      "approach": 0.49,
-      "bunker": 0.49,
-      "water": 0.49,
-      "ruff": 0.49,
-      "putting": 0.5,
-      "end": 0.01,
-    },
-    "putting": {
-      "putting": 0.5,
-      "end": 0.5,
-      "bunker": 0.5,
-      "ruff": 0.5,
-    },
-    "water": {
-      "approach": 0.9,
-      "ruff": 0.1,
-    },
-    "bunker": {
-      "bunker": 0.5,
-      "approach": 0.5,
-      "ruff": 0.5,
-    },
-    "ruff": {
-      "ruff": 0.5,
-      "bunker": 0.5,
-      "approach": 0.5,
-    }
-  },
-  "Par4": "undefined"
-}
-
+FILE_DIR = "./rule_data.json"
 
 class rule:
   def __init__(self, hole, game_type):
     self.hole = hole
     self.game_type = game_type
+    self.transition_prob = self.read_rule_data()
+
+  def read_rule_data(self):
+    transition_prob = {}
+    with open(FILE_DIR) as rule_data:
+      transition_prob = json.load(rule_data)
+    return transition_prob
 
   def get_start_action(self):
     return "driving_shot"
 
   def get_possible_next_actions(self, cur_action):
-    return TRANSITION_PROB[self.hole][cur_action]
+    return self.transition_prob[self.hole][cur_action]
 
   def get_next_normal_action(self, levels, cur_action):
     lists_next_actions = self.get_possible_next_actions(cur_action)

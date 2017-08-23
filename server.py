@@ -61,12 +61,15 @@ def webhook():
   hole = params['hole']
   user_name = params['username']
 
-  game = play_game(hole, user_name)
-  game_data = game.start_game()
-  if game_data:
-    return json.dumps(game_data), 200 
+  if user_name != "All":
+    game = play_game(hole, user_name)
+    game_data = game.start_game()
+    if game_data:
+      return json.dumps(game_data), 200 
+    else:
+      return "No game data", 200
   else:
-    return "No game data", 200
+    return "No username", 200
 
   return "OK", 200
 

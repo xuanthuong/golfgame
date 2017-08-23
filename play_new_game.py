@@ -13,7 +13,7 @@ class play_game:
     self.game_type = game_type
 
   def get_score(self, actions):
-    return len(actions)
+    return len(actions) - 1
 
   def save_game(self):
     pass
@@ -28,7 +28,7 @@ class play_game:
     actions.append(start_action)
     cur_action = start_action
     next_action = ""
-    while next_action != "end":
+    while next_action != "inhole":
       next_action = game_rule.get_next_action(levels, cur_action)
       actions.append(next_action)
       cur_action = next_action
@@ -37,22 +37,27 @@ class play_game:
     shots = []
     for i in range(len(actions) - 1):
       action_type = "Driving"
-      if actions[i] == "approach":
+      if actions[i] == "green":
         action_type = "Approach"
       elif actions[i] == "putting":
         action_type = "Putting"
 
+      if actions[i+1] == "putting":
+        to_location = "green"
+      else:
+        to_location = "Fairway" if actions[i+1] == "second_shot" or actions[i+1] == "third_shot" else actions[i+1]
+
       shots.append({
-        "from": actions[i],
-        "to": actions[i+1],
+        "distance": 222,
+        "toLocation": to_location,
         "score": i - 3,
-        "type": action_type
+        "action": action_type
       })
     game_data = {
       "Level": levels,
       "Day": "Monday",
       "Shot": shots,
-      "TotalScore": score
+      "HoleScore": score
     }
     self.save_game()
     return game_data
