@@ -13,8 +13,7 @@ class work_history():
     _connection = _engine.connect()
     _metadata = MetaData()
     _work_history = Table("work_history", _metadata,
-                          Column("IDX", Integer, primary_key=True),
-                          Column("WRK_HIS_ID", Integer),
+                          Column("WRK_HIS_ID", Integer, primary_key=True),
                           Column("USR_ID", Integer),
                           Column("PROC_NM", Text),
                           Column("ST_DT", DateTime),

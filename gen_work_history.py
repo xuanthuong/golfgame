@@ -17,7 +17,7 @@ def gen_rand_work_history(start, end):
   print("Retrieved data from database")
   for r in result:
     records.append({
-    'WRK_HIS_ID': r['WRK_HIS_ID'],
+    'USR_ID': user_id,
     'PROC_NM': r['PROC_NM'],
     'ST_DT': r['ST_DT'],
     'END_DT': r['END_DT'],
@@ -37,7 +37,7 @@ def gen_rand_work_history(start, end):
     lead_time = rd.uniform(1.0, 10.0)
     end_time = start_time + dt.timedelta(days=lead_time)
     records.append({
-      'WRK_HIS_ID': user_id,
+      'USR_ID': user_id,
       'PROC_NM': process_type,
       'ST_DT': start_time,
       'END_DT':end_time,
