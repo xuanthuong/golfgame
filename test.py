@@ -1,13 +1,39 @@
 import json
 from play_new_game import play_game
+from gen_work_history import gen_rand_work_history
+# hole = "Par5"
+# user_name = "ThuongTran"
 
-hole = "Par3"
-user_name = "userA"
+# game = play_game(hole, user_name)
+# game_data = game.start_game()
+# if game_data:
+#   # print(json.dumps(game_data), indent=4)
+#   print(game_data)
 
-game = play_game(hole, user_name)
-game_data = game.start_game()
-if game_data:
-  print(json.dumps(game_data), 200)
+# work_history = gen_rand_work_history((1, 8, 2017), (31, 8, 2017))
+# print(work_history)
+
+import datetime as dt
+from models.work_history import work_history
+
+wh = work_history("mysql://user1:user123456!@localhost/my_test")
+
+# today = dt.datetime.today()
+# data = {
+#       'USR_ID': 1,
+#       'PROC_NM': 'A',
+#       'ST_DT': today,
+#       'END_DT': today,
+#       'LD_TM': 0.45,
+#       'CRE_DT': today
+#     }
+# wh.insert_to(data)
+# result = wh.get_all()
+# print(json.dumps(result))
+# # for r in result:
+# #   # print(r['ST_DT'])
+# #   # print(r['PROC_NM'])
+# #   print
 
 
 # # Mongo test

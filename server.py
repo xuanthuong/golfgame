@@ -9,6 +9,7 @@ from play_new_game import play_game
 from models_service import get_levels, update_levels
 from user_level_model import user_level
 import random
+from gen_work_history import gen_rand_work_history
 
 app = Flask(__name__)
 
@@ -71,6 +72,12 @@ def webhook():
     return "No username", 200
 
   return "OK", 200
+
+
+@app.route('/golfgame-api/work-history', methods=['GET'])
+def rand_work_history():
+  work_history = gen_rand_work_history((1, 8, 2017), (31, 8, 2017))
+  return jsonify(work_history), 200
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku

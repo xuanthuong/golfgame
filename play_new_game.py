@@ -5,6 +5,7 @@
 
 from rule import rule
 from user import user
+from golf_distance import golf_distance
 
 class play_game:
   def __init__(self, hole, user_name, game_type="Single"):
@@ -22,6 +23,7 @@ class play_game:
     game_rule = rule(self.hole, self.user_name)
     usr = user(self.user_name)
     levels = usr.get_levels()
+    distance_rule = golf_distance(self.hole)
 
     actions = []
     start_action = game_rule.get_start_action()
@@ -47,12 +49,15 @@ class play_game:
       else:
         to_location = "Fairway" if actions[i+1] == "second_shot" or actions[i+1] == "third_shot" else actions[i+1]
 
+      dist = distance_rule.get_distance(actions[i], actions[i+1])
+
       shots.append({
-        "distance": 222,
+        "distance": dist,
         "toLocation": to_location,
         "score": i - 3,
         "action": action_type
       })
+
     game_data = {
       "Level": levels,
       "Day": "Monday",
