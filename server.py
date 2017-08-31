@@ -13,7 +13,6 @@ from gen_work_history import gen_rand_work_history
 
 app = Flask(__name__)
 
-
 @app.route('/', methods=['GET'])
 def verify():
   # when the endpoint is registered as a webhook, it must echo back
