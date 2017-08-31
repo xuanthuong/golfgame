@@ -7,7 +7,8 @@ import datetime as dt
 import random as rd
 from models.work_history import work_history
 
-DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
+# DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
+DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
 
 def gen_rand_work_history(start, end):
   wrk_hist = work_history(DB_URL)

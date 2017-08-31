@@ -36,6 +36,6 @@ class work_history():
       self.connection.execute(ins_query)
 
   def get_all(self):
-    s = select([self.work_history])
+    s = select([self.work_history]).order_by('PROC_NM')
     result = self.connection.execute(s)
     return result
