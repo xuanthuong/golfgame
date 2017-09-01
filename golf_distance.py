@@ -60,11 +60,11 @@ class golf_distance:
       return self.get_actual_driving_dist()
     elif action == 'driving_shot' and next_action == 'inhole':
       return self.avg_dist_par3
-    elif action == 'green' and next_action == 'putting':
+    elif action == 'approach' and next_action == 'putting':
       return self.get_actual_2nd_shot()
-    elif action == 'green' and next_action == 'inhole':
+    elif action == 'approach' and next_action == 'inhole':
       return self.avg_dist_putt + self.avg_dist_2nd_shot
-    elif action == 'green' and next_action != 'inhole' and next_action != 'putting':
+    elif action == 'approach' and next_action != 'inhole' and next_action != 'putting':
       return 0
     elif action == 'putting' and next_action == 'inhole':
       return self.get_actual_putting()
@@ -74,27 +74,27 @@ class golf_distance:
   def get_par4_dist(self, action, next_action):
     if action == 'driving_shot' and next_action == 'second_shot':
       return self.get_actual_driving_dist()
-    elif action == 'driving_shot' and next_action == 'green':
+    elif action == 'driving_shot' and next_action == 'approach':
       return self.get_actual_driving_dist() + self.get_actual_2nd_shot()
     elif action == 'driving_shot' and next_action == 'inhole':
       return self.avg_dist_par4
-    elif action == 'driving_shot' and next_action != 'inhole' and next_action != 'second_shot' and next_action != 'green':
+    elif action == 'driving_shot' and next_action != 'inhole' and next_action != 'second_shot' and next_action != 'approach':
       return 0
     
-    elif action == 'second_shot' and next_action == 'green':
+    elif action == 'second_shot' and next_action == 'approach':
       return self.get_actual_2nd_shot()
     elif action == 'second_shot' and next_action == 'putting':
       return self.get_actual_2nd_shot() + self.get_actual_3rd_shot()
     elif action == 'second_shot' and next_action == 'inhole':
       return self.get_actual_2nd_shot() + self.get_actual_3rd_shot() + self.get_actual_putting()
-    elif action == 'second_shot' and next_action != 'green' and next_action != 'putting' and next_action != 'inhole':
+    elif action == 'second_shot' and next_action != 'approach' and next_action != 'putting' and next_action != 'inhole':
       return 0
     
-    elif action == 'green' and next_action == 'putting':
+    elif action == 'approach' and next_action == 'putting':
       return self.get_actual_3rd_shot()
-    elif action == 'green' and next_action == 'inhole':
+    elif action == 'approach' and next_action == 'inhole':
       return self.get_actual_3rd_shot() + self.get_actual_putting()
-    elif action == 'green' and next_action != 'putting' and next_action != 'inhole':
+    elif action == 'approach' and next_action != 'putting' and next_action != 'inhole':
       return 0
 
     elif action == 'putting' and next_action == 'inhole':
@@ -110,14 +110,14 @@ class golf_distance:
       return self.get_actual_driving_dist()
     elif action == 'driving_shot' and next_action == 'third_shot':
       return self.get_actual_driving_dist() + self.get_actual_2nd_shot()
-    elif action == 'driving_shot' and next_action == 'green':
+    elif action == 'driving_shot' and next_action == 'approach':
       return self.get_actual_driving_dist() + self.get_actual_2nd_shot() + self.get_actual_3rd_shot()
-    elif action == 'driving_shot' and next_action != 'second_shot' and next_action != 'third_shot' and next_action != 'green':
+    elif action == 'driving_shot' and next_action != 'second_shot' and next_action != 'third_shot' and next_action != 'approach':
       return 0
     
     elif action == 'second_shot' and next_action == 'third_shot':
       return self.get_actual_2nd_shot()
-    elif action == 'second_shot' and next_action == 'green':
+    elif action == 'second_shot' and next_action == 'approach':
       return self.get_actual_2nd_shot() + self.get_actual_3rd_shot()
     elif action == 'second_shot' and next_action == 'putting':
       return self.get_actual_2nd_shot() + self.get_actual_3rd_shot() + self.get_actual_4th_shot()
@@ -126,7 +126,7 @@ class golf_distance:
     elif action == 'second_shot' and (next_action == 'bunker' or next_action == 'water' or next_action == 'ruff'):
       return 0
 
-    elif action == 'third_shot' and next_action == 'green':
+    elif action == 'third_shot' and next_action == 'approach':
       return self.get_actual_3rd_shot()
     elif action == 'third_shot' and next_action == 'putting':
       return self.get_actual_3rd_shot() + self.get_actual_4th_shot()
@@ -135,9 +135,9 @@ class golf_distance:
     elif action == 'third_shot' and (next_action == 'bunker' or next_action == 'water' or next_action == 'ruff'):
       return 0
     
-    elif action == 'green' and next_action == 'putting':
+    elif action == 'approach' and next_action == 'putting':
       return self.get_actual_4th_shot()
-    elif action == 'green' and next_action == 'inhole':
+    elif action == 'approach' and next_action == 'inhole':
       return self.get_actual_4th_shot() + self.get_actual_putting()
 
     elif action == 'approach' and (next_action == 'bunker' or next_action == 'water' or next_action == 'ruff'):

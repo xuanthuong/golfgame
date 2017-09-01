@@ -6,19 +6,21 @@
 import random
 import json
 
-FILE_DIR = "./rule_data.json"
+RULE_DATA = "./data/rule_data.json"
+LEVEL_PROB = "./data/level_prob.json"
 
 class rule:
   def __init__(self, hole, game_type):
     self.hole = hole
     self.game_type = game_type
-    self.transition_prob = self.read_rule_data()
+    self.transition_prob = self.read_json(RULE_DATA)
+    self.level_prob = self.read_json(LEVEL_PROB)
 
-  def read_rule_data(self):
-    transition_prob = {}
-    with open(FILE_DIR) as rule_data:
-      transition_prob = json.load(rule_data)
-    return transition_prob
+  def read_json(self, DIR):
+    result= {}
+    with open(DIR) as data:
+      result = json.load(data)
+    return result
 
   def get_start_action(self):
     return "driving_shot"
@@ -40,13 +42,11 @@ class rule:
   def get_normal_transition_prob(self, level, expect_prob):
     prob = expect_prob
     if (level <= 5):
-      diff = 0.1 if level == 5 else (0.2 if level == 4 else (
-              0.3 if level == 3 else (0.4 if level == 2 else (0.5 if level == 1 else 0.0))))
+      diff = self.level_prob["level<=5"][str(level)] if str(level) in self.level_prob["level<=5"] else 0
       prob += diff
       prob = 1 if prob > 1.0 else prob
     else:
-      diff = 0.1 if level == 10 else (0.2 if level == 9 else (
-              0.3 if level == 8 else (0.4 if level == 7 else (0.5 if level == 6 else 0.0))))
+      diff = self.level_prob["level>5"][str(level)] if str(level) in self.level_prob["level>5"] else 0
       prob -= diff
       prob = 0.0 if prob < 0.0 else prob
     return prob

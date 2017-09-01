@@ -6,8 +6,6 @@ import json
 from flask import Flask, request, jsonify
 
 from play_new_game import play_game
-from models_service import get_levels, update_levels
-from user_level_model import user_level
 import random
 from gen_work_history import gen_rand_work_history
 

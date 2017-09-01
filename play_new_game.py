@@ -5,14 +5,17 @@
 
 import datetime as dt
 from rule import rule
-from user import user
 from golf_distance import golf_distance
 from models.hole_history import hole_history
 from models.hole import hole
+from models.worker_level import worker_level
+from models.worker import worker
 import random as rd
 
-DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
-# DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
+# DB_URL = os.environ['GOLF_GAME_DB_URL']
+# DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
+DB_URL = "mysql://sql12192591:WDmK2WmCNq@sql12.freemysqlhosting.net/sql12192591"
+
 week_day = {
   '0': 'Mon',
   '1': 'Tue',
@@ -28,6 +31,10 @@ class play_game:
     self.hole = hole
     self.user_name = user_name
     self.game_type = game_type
+    wk = worker(DB_URL)
+    self.user_id = wk.get_by_username(self.user_name)
+    if not self.user_id:
+      raise ValueError("This user is not available...")
 
   def get_score(self, actions):
     return len(actions) - 1
@@ -51,13 +58,12 @@ class play_game:
 
     result_hist = []
     i = 1
-    usr_id = rd.randint(1,3)
     for shot in game_data['Shot']:
       result_hist.append({
         'HOLE_ID': hole_id,
         'CLSS_NO': 1,
         'ORD_NO': i,
-        'ACTR_ID': usr_id, # game_data['usr_id'],
+        'ACTR_ID': self.user_id,
         'ACT_NM': shot['action'],
         'RSLT_NM': shot['toLocation'],
         'ACT_SCRE': shot['score'],
@@ -71,8 +77,10 @@ class play_game:
 
   def start_game(self):
     game_rule = rule(self.hole, self.user_name)
-    usr = user(self.user_name)
-    levels = usr.get_levels()
+
+    wkl = worker_level(DB_URL)
+    levels = wkl.get_by_id(self.user_id)
+
     distance_rule = golf_distance(self.hole)
 
     actions = []
@@ -89,12 +97,12 @@ class play_game:
     shots = []
     for i in range(len(actions) - 1):
       action_type = "Driving"
-      if actions[i] == "green":
+      if actions[i] == "approach":
         action_type = "Approach"
       elif actions[i] == "putting":
         action_type = "Putting"
 
-      if actions[i+1] == "putting":
+      if actions[i+1] == "putting" or actions[i+1] == 'approach':
         to_location = "green"
       else:
         to_location = "Fairway" if actions[i+1] == "second_shot" or actions[i+1] == "third_shot" else actions[i+1]
