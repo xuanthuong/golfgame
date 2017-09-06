@@ -28,6 +28,18 @@ week_day = {
   '6': 'Sun'  
 }
 
+action_abbr = {
+  "driving_shot": "DRV",
+  "approach": "APR",
+  "bunker": "BUK",
+  "water": "WAT",
+  "ruff": "RUF",
+  "inhole": "END",
+  "putting": "PUT",
+  "second_shot": "SEC",
+  "third_shot": "THD"
+}
+
 class play_game:
   def __init__(self, hole, user_name, game_type="Single"):
     self.hole = hole
@@ -98,24 +110,12 @@ class play_game:
     score = self.get_score(actions)
     shots = []
     for i in range(len(actions) - 1):
-      action_type = "Driving"
-      if actions[i] == "approach":
-        action_type = "Approach"
-      elif actions[i] == "putting":
-        action_type = "Putting"
-
-      if actions[i+1] == "putting" or actions[i+1] == 'approach':
-        to_location = "green"
-      else:
-        to_location = "Fairway" if actions[i+1] == "second_shot" or actions[i+1] == "third_shot" else actions[i+1]
-
       dist = distance_rule.get_distance(actions[i], actions[i+1])
-
       shots.append({
         "distance": round(dist,2),
-        "toLocation": to_location,
+        "toLocation": action_abbr[actions[i+1]],
         "score": 1,
-        "action": action_type
+        "action": action_abbr[actions[i]]
       })
 
     game_data = {
