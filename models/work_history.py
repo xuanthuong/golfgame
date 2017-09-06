@@ -4,7 +4,7 @@
 # Date: 29 Aug 2017
 
 from sqlalchemy import create_engine, Table, Column, MetaData, Integer, Text, DateTime, Float
-from sqlalchemy import select
+from sqlalchemy import select, and_
 
 
 class work_history():
@@ -39,3 +39,10 @@ class work_history():
     s = select([self.work_history]).order_by('PROC_NM')
     result = self.connection.execute(s)
     return result
+
+  def get_by_period(self, start_date, end_date):
+    s = select([self.work_history]).where(and_(self.work_history.c.ST_DT >= start_date, 
+                                          self.work_history.c.END_DT <= end_date))
+    result = self.connection.execute(s)
+    return result
+    

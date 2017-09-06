@@ -77,7 +77,6 @@
 
 # DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 # DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
-# DB_URL = os.environ['GOLF_GAME_DB_URL']
 # print(DB_URL)
 # DB_URL = "mysql://sql12192591:WDmK2WmCNq@sql12.freemysqlhosting.net/sql12192591"
 

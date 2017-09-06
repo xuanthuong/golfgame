@@ -4,6 +4,7 @@
 # Date: 21 Aug 2017
 
 import os
+from config import get_DB_URL
 import datetime as dt
 from rule import rule
 from golf_distance import golf_distance
@@ -13,9 +14,8 @@ from models.worker_level import worker_level
 from models.worker import worker
 import random as rd
 
-DB_URL = os.environ['GOLF_GAME_DB_URL']
+DB_URL = get_DB_URL()
 # DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
-# DB_URL = "mysql://sql12192591:WDmK2WmCNq@sql12.freemysqlhosting.net/sql12192591"
 print('Database source: %s' % DB_URL)
 
 week_day = {

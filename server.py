@@ -5,17 +5,22 @@ import json
 # import requests
 from flask import Flask, request, jsonify
 
+from config import get_DB_URL
 from play_new_game import play_game
 import random
 from gen_work_history import gen_rand_work_history
 from models.worker_level import worker_level
 from models.worker import worker
+from models.work_history import work_history
 import datetime as dt
 
 
 app = Flask(__name__)
 
-DB_URL = os.environ['GOLF_GAME_DB_URL']
+DB_URL = get_DB_URL()
+wkl = worker_level(DB_URL)
+wk = worker(DB_URL)
+wrk_hist = work_history(DB_URL)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -36,8 +41,6 @@ def webhook1():
   if 'username' in params:
     user_name = params['username']
     if user_name != "All":
-      wkl = worker_level(DB_URL)
-      wk = worker(DB_URL)
       user_id = wk.get_by_username(user_name)
       levels = wkl.get_by_id(user_id)
       print(levels)
@@ -96,17 +99,20 @@ def rand_work_history():
 @app.route('/golfgame-api/work-history', methods=['POST'])
 def insert_work_history():
   params = request.json
-  print('params from fwd: ', params)
   work = {
     'USR_ID': params['USR_ID'],
     'PROC_NM': params['PROC_NM'],
-    'ST_DT': params['ST_DT'],
-    'END_DT': params['END_DT'],
-    'LD_TM': arams['END_DT'] - params['ST_DT'],
+    'ST_DT': dt.datetime.strptime(params['ST_DT'], "%b %d, %Y %H:%M:%S"),
+    'END_DT': dt.datetime.strptime(params['END_DT'], "%b %d, %Y %H:%M:%S"),
+    'LD_TM': params['LD_TM'],
     'CRE_DT': dt.datetime.today()
     }
-  wrk_hist = work_history(DB_URL)
-  # wrk_hist.insert_to
+
+  for usr in work['USR_ID']:
+    tmp = work
+    tmp['USR_ID'] = wk.get_by_username(usr)
+    wrk_hist.insert_to(tmp)
+
   return "ok", 200
 
 
@@ -116,4 +122,6 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 
 if __name__ == '__main__':
+  # app.run(debug=True, host="0.0.0.0", port=5055)
   app.run(debug=True, host="0.0.0.0")
+  

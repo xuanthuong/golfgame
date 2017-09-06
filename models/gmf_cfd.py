@@ -47,25 +47,30 @@ class gmf_cfd(Base):
   def get_all(self):
     return self.session.query(gmf_cfd)
 
-  def get_level(self, proc_name, leadtime, cur_day):
+  def get_by_period(self, start_date, end_date):
+    return self.session.query(gmf_cfd).filter(and_(
+      gmf_cfd.ST_DT == start_date,
+      gmf_cfd.END_DT == end_date))
+
+  def get_level(self, proc_name, leadtime, start_date, end_date):
     # query = select([gmf_cfd.CFD_ID, gmf_cfd.LVL_NO]).filter(_and(
     #   gmf_cfd.PROC_TP_NM == proc_name,
     #   gmf_cfd.LOWR_BND_NO < leadtime,
     #   gmf_cfd.UPPR_BND_NO > leadtime))
     # return self.session.execute(query).fetchall()
 
-    end_time = cur_day - dt.timedelta(days=30)
-    
     return self.session.query(gmf_cfd).filter(and_(
       gmf_cfd.PROC_TP_NM == proc_name,
       gmf_cfd.LOWR_BND_NO < leadtime,
-      gmf_cfd.UPPR_BND_NO > leadtime))
+      gmf_cfd.UPPR_BND_NO > leadtime,
+      gmf_cfd.ST_DT == start_date,
+      gmf_cfd.END_DT == end_date))
 
   def sp_test_1(self, test_id):
     query = 'call test_procedure(%d)'%test_id
     # try:
     result = self.session.execute(query).fetchall()
-    return result      
+    return result
     # except exc.DBAPIError, e: #Proper way of reconnecting?
     #   t.rollback()
     #   time.sleep(5)
