@@ -112,7 +112,7 @@ class play_game:
       dist = distance_rule.get_distance(actions[i], actions[i+1])
 
       shots.append({
-        "distance": dist,
+        "distance": round(dist,2),
         "toLocation": to_location,
         "score": 1,
         "action": action_type
