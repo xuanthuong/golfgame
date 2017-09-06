@@ -53,6 +53,9 @@ class gmf_cfd(Base):
     #   gmf_cfd.LOWR_BND_NO < leadtime,
     #   gmf_cfd.UPPR_BND_NO > leadtime))
     # return self.session.execute(query).fetchall()
+
+    end_time = cur_day - dt.timedelta(days=30)
+    
     return self.session.query(gmf_cfd).filter(and_(
       gmf_cfd.PROC_TP_NM == proc_name,
       gmf_cfd.LOWR_BND_NO < leadtime,
