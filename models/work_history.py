@@ -5,6 +5,7 @@
 
 from sqlalchemy import create_engine, Table, Column, MetaData, Integer, Text, DateTime, Float
 from sqlalchemy import select, and_
+import datetime as dt
 
 
 class work_history():
@@ -43,6 +44,17 @@ class work_history():
   def get_by_period(self, start_date, end_date):
     s = select([self.work_history]).where(and_(self.work_history.c.ST_DT >= start_date, 
                                           self.work_history.c.END_DT <= end_date))
+    result = self.connection.execute(s)
+    return result
+    
+  def get_finalized_process_of_one_day(self, today, worker):
+    lower = dt.datetime(today.year, today.month, today.day, 0, 0, 0)
+    upper = dt.datetime(today.year, today.month, today.day, 23, 59, 59)
+    print(lower)
+    print(upper)
+    s = select([self.work_history]).where(and_(self.work_history.c.END_DT > lower, 
+                                              self.work_history.c.END_DT < upper,
+                                              self.work_history.c.USR_ID == worker))
     result = self.connection.execute(s)
     return result
     

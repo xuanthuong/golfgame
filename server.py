@@ -81,7 +81,7 @@ def webhook():
     game = play_game(hole, user_name)
     game_data = game.start_game()
     if game_data:
-      return json.dumps(game_data), 200 
+      return jsonify(game_data), 200 
     else:
       return "No game data", 200
   else:

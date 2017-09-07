@@ -61,7 +61,7 @@ class play_game:
     hole_data = {
       'PLER_ID': 1,
       'HOLE_TP': self.hole,
-      'HOLE_DT': dt.datetime.today(),
+      'HOLE_DT': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
       'WK_DY': week_day[str(dt.datetime.today().weekday())],
       'GRP_TP': "N",
       'WRKR_1_ID': 1,
@@ -84,9 +84,18 @@ class play_game:
         'DIST_NO': shot['distance']
       })
       i += 1
+    
+    hole_hist_results = []
     for rec in result_hist:
+      hole_hist_results.append(rec)
       hole_hist.insert_to(rec)
-    return result_hist
+    
+    hole_data["TTL_DIST_NO"] = round(game_data['totalDistance'],3)
+    saved_data = {
+      "hole": [hole_data],
+      "holeDetail": hole_hist_results
+    }
+    return saved_data
 
 
   def start_game(self):
@@ -109,8 +118,10 @@ class play_game:
     # Finish a hole
     score = self.get_score(actions)
     shots = []
+    totalDistance = 0
     for i in range(len(actions) - 1):
       dist = distance_rule.get_distance(actions[i], actions[i+1])
+      totalDistance += dist
       shots.append({
         "distance": round(dist,2),
         "toLocation": action_abbr[actions[i+1]],
@@ -122,7 +133,8 @@ class play_game:
       "Level": levels,
       "Day": "Monday",
       "Shot": shots,
-      "HoleScore": score
+      "HoleScore": score,
+      "totalDistance": totalDistance
     }
-    self.save_game(game_data)
-    return game_data
+    saved_data = self.save_game(game_data)
+    return saved_data

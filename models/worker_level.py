@@ -4,8 +4,9 @@
 # Date: 29 Aug 2017
 
 from sqlalchemy import create_engine, Table, Column, MetaData, Integer, Text, DateTime, Float
-from sqlalchemy import select
+from sqlalchemy import select, update, and_
 from sqlalchemy.orm import sessionmaker
+import datetime as dt
 
 
 class worker_level():
@@ -45,7 +46,48 @@ class worker_level():
   
   def get_by_id(self, user_id):
     s = select([self.worker_level_tb]).where(self.worker_level_tb.c.WRKR_ID == user_id)
+    obj = self.connection.execute(s).fetchone()
+    if obj:
+      res = [obj['LVL_1_NO'], obj['LVL_2_NO'], obj['LVL_3_NO'], obj['LVL_4_NO'], obj['LVL_5_NO'],
+            obj['LVL_6_NO'], obj['LVL_7_NO'], obj['LVL_8_NO'], obj['LVL_9_NO'], obj['LVL_10_NO']]
+    # res = [obj.LVL_1_NO, obj.LVL_2_NO, obj.LVL_3_NO, obj.LVL_4_NO, obj.LVL_5_NO,
+    #       obj.LVL_6_NO, obj.LVL_7_NO, obj.LVL_8_NO, obj.LVL_9_NO, obj.LVL_10_NO]
+    else:
+      res = None
+    return res
+
+  def get_by_id_and_cfd(self, user_id, cfd_id):
+    s = select([self.worker_level_tb]).where(and_(self.worker_level_tb.c.WRKR_ID == user_id,
+                                                  self.worker_level_tb.c.CFD_ID == cfd_id))
+    obj = self.connection.execute(s).fetchone()
+    if obj:
+      res = [obj['IDX'], obj['LVL_1_NO'], obj['LVL_2_NO'], obj['LVL_3_NO'], obj['LVL_4_NO'], obj['LVL_5_NO'],
+            obj['LVL_6_NO'], obj['LVL_7_NO'], obj['LVL_8_NO'], obj['LVL_9_NO'], obj['LVL_10_NO']]
+      # res = [obj.LVL_1_NO, obj.LVL_2_NO, obj.LVL_3_NO, obj.LVL_4_NO, obj.LVL_5_NO,
+      #       obj.LVL_6_NO, obj.LVL_7_NO, obj.LVL_8_NO, obj.LVL_9_NO, obj.LVL_10_NO]
+      # res = {
+      #   'IDX': obj['IDX']
+      #   'CFD_ID': obj['LVL_1_NO'],
+      #   'WRKR_ID': obj['LVL_1_NO'],
+      #   'LVL_1_NO': obj['LVL_1_NO'],
+      #   'LVL_2_NO': obj['LVL_1_NO'],
+      #   'LVL_3_NO': obj['LVL_1_NO'],
+      #   'LVL_4_NO': obj['LVL_1_NO'],
+      #   'LVL_5_NO': obj['LVL_1_NO'],
+      #   'LVL_6_NO': obj['LVL_1_NO']
+      #   'LVL_7_NO': obj['LVL_1_NO'],
+      #   'LVL_8_NO': obj['LVL_1_NO'],
+      #   'LVL_9_NO': obj['LVL_1_NO'],
+      #   'LVL_10_NO': obj['LVL_1_NO']
+      # }
+    else:
+      res = None
+    return res
+
+  def merge_to(self, lvl_obj):
+    pass
+
+  def update(self, id, obj):
+    s = self.worker_level_tb.update().where(self.worker_level_tb.c.IDX == id).values(obj)
     r = self.connection.execute(s)
-    for obj in r:
-      return [obj['LVL_1_NO'], obj['LVL_2_NO'], obj['LVL_3_NO'], obj['LVL_4_NO'], obj['LVL_5_NO'],
-              obj['LVL_6_NO'], obj['LVL_7_NO'], obj['LVL_8_NO'], obj['LVL_9_NO'], obj['LVL_10_NO']]
+

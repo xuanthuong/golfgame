@@ -1,0 +1,139 @@
+{
+    "Par3": {
+      "DRV": {
+        "APR": "boy_drive.gif",
+        "BUK": "boy_bad_shot.gif",
+        "WAT": "boy_bad_shot.gif",
+        "RUF": "boy_bad_shot.gif",
+        "END": "boy_victory.gif"
+      },
+      "APR": {
+        "APR": "boy_putt.gif",
+        "BUK": "boy_bad_shot.gif",
+        "WAT": "boy_bad_shot.gif",
+        "RUF": "boy_bad_shot.gif",
+        "PUT": "boy_putt.gif",
+        "END": "boy_victory.gif"
+      },
+      "PUT": {
+        "PUT": "boy_putt.gif",
+        "END": "boy_victory.gif",
+        "BUK": "boy_bad_shot.gif",
+        "RUF": "boy_bad_shot.gif"
+      },
+      "WAT": {
+        "APR": "boy_putt.gif",
+        "RUF": "boy_bad_shot.gif"
+      },
+      "BUK": {
+        "BUK": "boy_bad_shot.gif",
+        "APR": "boy_putt.gif",
+        "RUF": "boy_bad_shot.gif"
+      },
+      "RUF": {
+        "RUF": "boy_bad_shot.gif",
+        "BUK": "boy_bad_shot.gif",
+        "APR": "boy_putt.gif"
+      }
+    },
+    "Par4": {
+      "DRV": {
+        "SEC": "boy_drive.gif",
+        "APR": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif",
+        "END": "boy_drive.gif"
+      },
+      "SEC": {
+        "APR": "boy_drive.gif",
+        "PUT": "boy_drive.gif",
+        "END": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "APR": {
+        "PUT": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif",
+        "END": "boy_drive.gif"
+      },
+      "PUT": {
+        "PUT": "boy_drive.gif",
+        "END": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "WAT": {
+        "SEC": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "BUK": {
+        "BUK": "boy_drive.gif",
+        "APR": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "RUF": {
+        "RUF": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "APR": "boy_drive.gif"
+      }
+    },
+    "Par5": {
+      "DRV": {
+        "THD": "boy_drive.gif",
+        "SEC": "boy_drive.gif",
+        "APR": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "SEC": {
+        "THD": "boy_drive.gif",
+        "APR": "boy_drive.gif",
+        "PUT": "boy_drive.gif",
+        "END": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "THD": {
+        "APR": "boy_drive.gif",
+        "PUT": "boy_drive.gif",
+        "END": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "APR": {
+        "PUT": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "WAT": "boy_drive.gif",
+        "RUF": "boy_drive.gif",
+        "END": "boy_drive.gif"
+      },
+      "PUT": {
+        "PUT": "boy_drive.gif",
+        "END": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "WAT": {
+        "SEC": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "BUK": {
+        "THD": "boy_drive.gif",
+        "APR": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "RUF": "boy_drive.gif"
+      },
+      "RUF": {
+        "THD": "boy_drive.gif",
+        "RUF": "boy_drive.gif",
+        "BUK": "boy_drive.gif",
+        "APR": "boy_drive.gif"
+      }
+    }
+  }

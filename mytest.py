@@ -71,11 +71,11 @@
 
 # # Insert some users to db
 # from models.worker import worker
-# from models.worker_level import worker_level
-# import datetime as dt
-# import random as rd
+from models.worker_level import worker_level
+import datetime as dt
+import random as rd
 
-# DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
+DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 # DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
 # print(DB_URL)
 # DB_URL = "mysql://sql12192591:WDmK2WmCNq@sql12.freemysqlhosting.net/sql12192591"
@@ -88,10 +88,11 @@
 #     'CRE_DT': dt.datetime.today()
 #   })
 
+
 # wkl = worker_level(DB_URL)
 # for i in range(4):
 #   temp = {
-#     'CFD_ID': 1,
+#     'CFD_ID': 2,
 #     'WRKR_ID': i + 1,
 #     'LVL_1_NO': rd.randint(1, 10),
 #     'LVL_2_NO': rd.randint(1, 10),
@@ -106,5 +107,27 @@
 #   }
 #   wkl.insert_to(temp)
 
+
 # print(wkl.get_by_id(1))
 
+# test_obj = {
+  #     'IDX': 8,
+  #     'CFD_ID': 2,
+  #     'WRKR_ID': 1,
+  #     'LVL_1_NO': 1,
+  #     'LVL_2_NO': 8,
+  #     'LVL_3_NO': 3,
+  #     'LVL_4_NO': 3,
+  #     'LVL_5_NO': 8,
+  #     'LVL_6_NO': 4,
+  #     'LVL_7_NO': 4,
+  #     'LVL_8_NO': 4,
+  #     'LVL_9_NO': 5,
+  #     'LVL_10_NO': 5
+  #   }
+  # wk_level.update(8, test_obj)
+
+# Test update levels
+# today = dt.datetime(2017, 8, 28)
+# update_levels(today, 1)
+# print(wk_level.get_by_id(4))

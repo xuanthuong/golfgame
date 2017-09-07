@@ -7,3 +7,4 @@ import os
 
 def get_DB_URL():
   return os.environ['GOLF_GAME_DB_URL']
+  # return "mysql://golf_user:dounets123!@localhost/golfgame"
