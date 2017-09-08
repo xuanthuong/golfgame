@@ -62,7 +62,7 @@ class play_game:
     hol = hole(DB_URL)
 
     hole_data = {
-      'PLER_ID': 1,
+      'PLER_ID': self.user_id ,
       'HOLE_TP': self.hole,
       'HOLE_DT': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
       'WK_DY': week_day[str(dt.datetime.today().weekday())],
