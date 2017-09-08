@@ -115,6 +115,25 @@ def insert_work_history():
 
   return "ok", 200
 
+@app.route('/golfgame-api/notify-hole-results', methods=['POST'])
+def insert_work_history():
+  params = request.json
+  work = {
+    'USR_ID': params['USR_ID'],
+    'PROC_NM': params['PROC_NM'],
+    'ST_DT': dt.datetime.strptime(params['ST_DT'], "%b %d, %Y %H:%M:%S"),
+    'END_DT': dt.datetime.strptime(params['END_DT'], "%b %d, %Y %H:%M:%S"),
+    'LD_TM': params['LD_TM'],
+    'CRE_DT': dt.datetime.today()
+    }
+
+  for usr in work['USR_ID']:
+    tmp = work
+    tmp['USR_ID'] = wk.get_by_username(usr)
+    wrk_hist.insert_to(tmp)
+
+  return "ok", 200
+
 
 def log(message):  # simple wrapper for logging to stdout on heroku
   print(message)

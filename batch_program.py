@@ -164,7 +164,9 @@ if __name__ == "__main__":
       headers = {
           "Content-Type": "application/json"
       }
+      # r = requests.post("https://gamification-pm.herokuapp.com/api/socketApi", headers=headers, data=game_data)
       r = requests.post("http://dounets.com:5003/api/socketApi", headers=headers, data=game_data)
+      
       if r.status_code == 200:
         print('Done game result notification - Status code: ', r.status_code)
 
