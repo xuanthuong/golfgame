@@ -18,6 +18,7 @@ import datetime as dt
 app = Flask(__name__)
 
 DB_URL = get_DB_URL()
+print(DB_URL)
 wkl = worker_level(DB_URL)
 wk = worker(DB_URL)
 wrk_hist = work_history(DB_URL)
