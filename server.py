@@ -78,6 +78,7 @@ def webhook():
   user_name = params['username']
 
   if user_name != "All":
+    print("Start game")
     game = play_game(hole, user_name)
     game_data = game.start_game()
     if game_data:

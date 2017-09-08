@@ -126,10 +126,15 @@ class play_game:
     actions.append(start_action)
     cur_action = start_action
     next_action = ""
+    count = 0
     while next_action != "inhole":
       next_action = game_rule.get_next_action(levels, cur_action)
       actions.append(next_action)
       cur_action = next_action
+      count += 1
+      if count > 20:
+        break
+    
     # Finish a hole
     score = self.get_score(actions)
     shots = []
