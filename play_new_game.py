@@ -41,12 +41,15 @@ action_abbr = {
 }
 
 class play_game:
-  def __init__(self, hole, user_name, game_type="Single"):
+  def __init__(self, hole, user_name, user_id = 0, game_type="Single"):
     self.hole = hole
     self.user_name = user_name
     self.game_type = game_type
     wk = worker(DB_URL)
-    self.user_id = wk.get_by_username(self.user_name)
+    if user_id == 0:
+      self.user_id = wk.get_by_username(self.user_name)
+    else:
+      self.user_id = user_id
     if not self.user_id:
       raise ValueError("This user is not available...")
 
@@ -71,6 +74,7 @@ class play_game:
     hole_id = hol.insert_to(hole_data)
 
     result_hist = []
+    hole_hist_results = []
     i = 1
     for shot in game_data['Shot']:
       result_hist.append({
@@ -83,14 +87,25 @@ class play_game:
         'ACT_SCRE': shot['score'],
         'DIST_NO': shot['distance']
       })
+      hole_hist_results.append({
+        'HOLE_ID': hole_id,
+        'CLSS_NO': 1,
+        'ORD_NO': i,
+        'ACTR_ID': self.user_id,
+        'ACT_NM': shot['action'],
+        'RSLT_NM': shot['toLocation'],
+        'ACT_SCRE': shot['score'],
+        'DIST_NO': shot['distance'],
+        'holeType': shot['holeType']
+      })
       i += 1
-    
-    hole_hist_results = []
+
     for rec in result_hist:
-      hole_hist_results.append(rec)
+      # hole_hist_results.append(rec)
       hole_hist.insert_to(rec)
     
     hole_data["TTL_DIST_NO"] = round(game_data['totalDistance'],3)
+
     saved_data = {
       "hole": [hole_data],
       "holeDetail": hole_hist_results
@@ -126,7 +141,8 @@ class play_game:
         "distance": round(dist,2),
         "toLocation": action_abbr[actions[i+1]],
         "score": 1,
-        "action": action_abbr[actions[i]]
+        "action": action_abbr[actions[i]],
+        "holeType": self.hole
       })
 
     game_data = {

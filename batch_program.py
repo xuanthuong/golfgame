@@ -94,6 +94,11 @@ def pause():
   print("Press any key to continue ...")
   input()
 
+
+def decide_winner(week):
+  pass
+
+
 if __name__ == "__main__":
   # END_DATE = dt.datetime.today()
   # START_DATE = today - dt.timedelta(days=30)
@@ -101,66 +106,69 @@ if __name__ == "__main__":
 
   # time.sleep(5) # for updating cfd data
 
-  week_days = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri']
+  week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
   hole_types = {'Mon': "Par3", "Tue": "Par4", "Wed": "Par3", "Thu": "Par5", "Fri": "Par5"}
   proc_list = ['A']
   workers_list = [1, 2, 3, 4]
   num_tasks = 2
   max_lt = 8
 
-  day = 'Mon'
-  
-  # # for day in week_days:
-  # print("%s - System start batch job" % day)
-  # print("System get finialized processes of all user")
-  # for wk_id in workers_list:
-  #   for i in range(rd.randint(1, num_tasks)):
-  #     today = dt.datetime.today()
-  #     lead_time = round(rd.uniform(1.0, max_lt), 2)
-  #     start_time = today - dt.timedelta(days=lead_time)
-  #     data = {'USR_ID': wk_id,
-  #             'PROC_NM': rd.choice(proc_list),
-  #             'ST_DT': start_time,
-  #             'END_DT': today,
-  #             'LD_TM': lead_time,
-  #             'CRE_DT': today}
-  #     wkhist.insert_to(data)
+  # day = 'Mon'
 
-  # time.sleep(5)
-  # pause()
+  for day in week_days:  
+    print("[%s] - System start batch job" % day)
+    pause()
+    print("[%s] - System get finialized processes of all user" % day)
+    for wk_id in workers_list:
+      for i in range(rd.randint(1, num_tasks)):
+        today = dt.datetime.today()
+        lead_time = round(rd.uniform(1.0, max_lt), 2)
+        start_time = today - dt.timedelta(days=lead_time)
+        data = {'USR_ID': wk_id,
+                'PROC_NM': rd.choice(proc_list),
+                'ST_DT': start_time,
+                'END_DT': today,
+                'LD_TM': lead_time,
+                'CRE_DT': today}
+        wkhist.insert_to(data)
 
-  # print("System update work level for all user")
-  # for wk_id in workers_list:
-  #   today = dt.datetime.today()
-  #   update_levels(today, wk_id)
+    time.sleep(5)
+    # pause()
 
-  pause()
-  print("System is playing game for all user")
+    print("[%s]- System update work level for all user" % day)
+    for wk_id in workers_list:
+      today = dt.datetime.today()
+      update_levels(today, wk_id)
 
-  hole = hole_types[day]
-  user_name = 'ThuongTran'
+    # pause()
+    print("[%s] - System is playing game for all user" % day)
 
-  if user_name != "All":
-    game = play_game(hole, user_name)
-    game_data = game.start_game()
-    game_data = json.dumps(game_data)
-    if game_data:
-      print("Hole Result: ")
-      print(game_data)
-    else:
-      print("No game data")
-  else:
-    print("No username")
+    for user_id in workers_list:
+      hole = hole_types[day]
+      user_name = 'ThuongTran'
 
-  # NOTIFY TO SOCKET IO
-  print("Time - system notify result to users")
-  headers = {
-      "Content-Type": "application/json"
-  }
-  r = requests.post("http://10.0.14.199:8082/api/socketApi", headers=headers, data=game_data)
-  if r.status_code == 200:
-    print('Done game result notification - Status code: ', r.status_code)
+      if user_name != "All":
+        game = play_game(hole, user_name, user_id)
+        game_data = game.start_game()
+        game_data = json.dumps(game_data)
+        if game_data:
+          print("Hole Result: ")
+          print(game_data)
+        else:
+          print("No game data")
+      else:
+        print("No username")
 
-  print("Sunday - batch job are updating cfd table")
+      # NOTIFY TO SOCKET IO
+      print("[%s] - system notify result to users" % day)
+      headers = {
+          "Content-Type": "application/json"
+      }
+      r = requests.post("http://dounets.com:5003/api/socketApi", headers=headers, data=game_data)
+      if r.status_code == 200:
+        print('Done game result notification - Status code: ', r.status_code)
 
-  print("Repeat")
+
+  print("[Sun] - batch job are updating cfd table")
+
+  print("Repeat.....next week ......")

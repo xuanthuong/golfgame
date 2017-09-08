@@ -55,7 +55,7 @@ class gmf_cfd(Base):
   def get_level(self, proc_name, leadtime, start_date, end_date):    
     query = select([gmf_cfd.CFD_ID, gmf_cfd.LVL_NO]).where(and_(
       gmf_cfd.PROC_TP_NM == proc_name,
-      gmf_cfd.LOWR_BND_NO < leadtime,
+      gmf_cfd.LOWR_BND_NO <= leadtime,
       gmf_cfd.UPPR_BND_NO > leadtime,
       gmf_cfd.ST_DT == start_date,
       gmf_cfd.END_DT == end_date))
