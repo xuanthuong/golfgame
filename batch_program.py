@@ -170,6 +170,9 @@ if __name__ == "__main__":
       if r.status_code == 200:
         print('Done game result notification - Status code: ', r.status_code)
 
+      print("[%s] - Finish notify to user %s" % (day, user_id))
+      pause()
+
 
   print("[Sun] - batch job are updating cfd table")
 
