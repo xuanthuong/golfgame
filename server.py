@@ -18,10 +18,7 @@ import datetime as dt
 app = Flask(__name__)
 
 DB_URL = get_DB_URL()
-print(DB_URL)
-wkl = worker_level(DB_URL)
-wk = worker(DB_URL)
-wrk_hist = work_history(DB_URL)
+print("DB URL at server.py: %s" % DB_URL)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -42,6 +39,8 @@ def webhook1():
   if 'username' in params:
     user_name = params['username']
     if user_name != "All":
+      wk = worker(DB_URL)
+      wkl = worker_level(DB_URL)
       user_id = wk.get_by_username(user_name)
       levels = wkl.get_by_id(user_id)
       print(levels)
@@ -111,6 +110,8 @@ def insert_work_history():
 
   for usr in work['USR_ID']:
     tmp = work
+    wk = worker(DB_URL)
+    wrk_hist = work_history(DB_URL)
     tmp['USR_ID'] = wk.get_by_username(usr)
     wrk_hist.insert_to(tmp)
 
