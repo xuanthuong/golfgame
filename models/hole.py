@@ -40,3 +40,9 @@ class hole():
     s = select([self.gmf_hole]).order_by('HOLE_ID')
     result = self.connection.execute(s)
     return result
+
+  def get_hole_type_by_id(self, hole_id):
+    s = select([self.gmf_hole]).where(self.gmf_hole.c.HOLE_ID == hole_id)
+    result = self.connection.execute(s)
+    for res in result:
+      return res

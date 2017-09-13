@@ -5,7 +5,7 @@
 
 
 from sqlalchemy import create_engine, Table, Column, MetaData, Integer, Text, DateTime, Float
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 
 class hole_history():
@@ -43,3 +43,14 @@ class hole_history():
     s = select([self.hole_history]).order_by('HOLE_ID')
     result = self.connection.execute(s)
     return result
+
+  def get_by_holeid(self, hole_id):
+    s = select([self.hole_history]).where(self.hole_history.c.HOLE_ID == hole_id)
+    result = self.connection.execute(s)
+    return result
+
+  # def get_total_distance_of_hole(self, hole_id):
+  #   dist = select([func.count()]).select_from([self.hole_history]).where(self.hole_history.c.HOLE_ID == hole_id)
+  #   return dist
+
+  # https://stackoverflow.com/questions/12941416/how-to-count-rows-with-select-count-with-sqlalchemy

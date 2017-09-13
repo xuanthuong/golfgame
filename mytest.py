@@ -74,12 +74,16 @@
 from models.worker_level import worker_level
 import datetime as dt
 import random as rd
+from models.game import game
+from models.league import league
+from models.player import player
 
 DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 # DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
 # print(DB_URL)
 # DB_URL = "mysql://sql12192591:WDmK2WmCNq@sql12.freemysqlhosting.net/sql12192591"
 
+# ############# Insert data to worker table
 # wk = worker(DB_URL)
 # users = ['thuongtran', 'vanngo', 'khangdong', 'lucduong']
 # for user in users:
@@ -88,7 +92,7 @@ DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 #     'CRE_DT': dt.datetime.today()
 #   })
 
-
+# ############# Insert data to worker level
 # wkl = worker_level(DB_URL)
 # for i in range(4):
 #   temp = {
@@ -108,7 +112,52 @@ DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 #   wkl.insert_to(temp)
 
 
-# print(wkl.get_by_id(1))
+# # ############ Insert data to game
+# gm = game(DB_URL)
+# for i in range(1, 11):
+#   temp = {
+#     "GAME_NM": "AUG 2th Week",
+#     "GAME_TP": "GF",
+#     "ST_DT": dt.date(2017, 8, 21),
+#     "END_DT": dt.date(2017, 8, 25),
+#     "LEAG_ID": 1,
+#     "PLY_TP": "STK",
+#     "WINR_TP": "S",
+#     "CFD_ID": 1
+#   }
+#   print(gm.insert_to(temp))
+
+# # ############ Insert data to League
+# lg = league(DB_URL)
+# temp = {
+#   "LEAG_NM": "2017 CLT CHAMPION",
+# }
+# print(lg.insert_to(temp))
+
+# # ############ Insert data to Player
+# pl = player(DB_URL)
+# for i in range(1, 11):
+#   temp = {
+#     "GAME_ID": i,
+#     "PLER_TP": "S",
+#     "SCRE_NO": rd.randint(3,20),
+#     "GRD_NO": 1,
+#     "TEAM_ID": 1
+#   }
+#   print(pl.insert_to(temp))
+
+# # ########### Test call procedure to get game results
+# from models.sqlprocedure import sqlprocedure
+# sql_proc = sqlprocedure(DB_URL)
+
+# params = {
+#   'league_name': '2017 CLT CHAMPION',
+#   'start_date': '2017-08-14',
+#   'end_date': '2017-08-18',
+#   'worker_id': 1
+# }
+# result = sql_proc.get_game_results(params)
+# print(result[0]['HOLE_TP'])
 
 # test_obj = {
   #     'IDX': 8,
@@ -127,7 +176,46 @@ DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
   #   }
   # wk_level.update(8, test_obj)
 
-# Test update levels
+# ######### Test update levels#
 # today = dt.datetime(2017, 8, 28)
 # update_levels(today, 1)
 # print(wk_level.get_by_id(4))
+
+
+# # ####### Test playing game
+# hole = "Par3"
+# user_name = 'ThuongTran'
+
+# game = play_game(hole, user_name)
+# game_data = game.start_game()
+# if game_data:
+#   print(game_data)
+
+
+# from rule import rule
+# game_rule = rule("Par3", "ThuongTran")
+# print(game_rule.get_normal_transition_prob(1, 0.005))
+
+# import datetime as dt
+# from models.gmf_cfd import gmf_cfd
+# from models.work_history import work_history
+
+# DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
+# a = gmf_cfd(DB_URL)
+# work_his = work_history(DB_URL)
+# for item in a.get_all():
+#   print(item.CFD_ID)
+
+# Test get cfd_id and level from CFD table
+# print(a.sp_test_1(359))
+# for ar in a.get_level('A', 1.6, '2017-07-31 17:00:00', '2017-08-30 17:00:00'):
+#   print(ar.LVL_NO)
+
+# for arr in a.get_by_period('2017-07-31 17:00:00', '2017-08-30 17:00:00'):
+#   print(arr['LVL_NO'])
+
+
+# today = dt.datetime.today()
+# start_date = today - dt.timedelta(days=30)
+# for r in work_his.get_by_period(start_date, today):
+#   print(r)
