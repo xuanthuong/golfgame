@@ -108,7 +108,7 @@ class notify_game_results():
     lg_avg = sql_proc.get_avg_leage_point(self.league_name)
     for i in range(len(lg_avg[0])):
       hole = 'hole_' + str(i+1)
-      league_avg[hole] = lg_avg[0][hole]
+      league_avg[hole] = round(lg_avg[0][hole], 2)
     league_avg['total'] = sum(league_avg.values())
     league_avg['hole'] = 'League Avg.'
 
@@ -122,7 +122,7 @@ class notify_game_results():
         week = 'week_' + str(i+1)
         mytemp.append(results[i][week][hole])
         graph_data.append(results[i][week]['total'])
-      five_week_avg[hole] = sum(mytemp) / len(mytemp)
+      five_week_avg[hole] = round((sum(mytemp) / len(mytemp)), 2)
     five_week_avg['total'] = sum(five_week_avg.values())
     five_week_avg['hole'] = '5 Weeks Avg.'
 
@@ -131,25 +131,16 @@ class notify_game_results():
     table_data.append(league_avg)
     table_data.append(five_week_avg)
 
+
+    league_avg_graph = []
+    for i in range(5):
+      league_avg_graph.append(league_avg['total'])
+
     graph = {
       'labels': ['week 1', 'week 2', 'week 3', 'week 4', 'week 5'],
-      'data': graph_data
+      'data': [{'name': '5 Weeks Trend', 'data': graph_data}]
     }
 
-    # league_list = {
-    #   'name': self.league_name,
-    #   'date': str(self.start_date) + " ~ " + str(self.end_date),
-    #   'winner': 'Thuong Tran',
-    #   'point': table_data[1]['total'],
-    #   'player': 1,
-    #   'rankList': [
-    #     {
-    #       'player': 'Thuong Tran',
-    #       'point': table_data[1]['total'],
-    #       'rank': 1
-    #     }
-    #   ]
-    # }
     league_list = [{
       'name': self.league_name,
       'date': str(self.start_date) + " ~ " + str(self.end_date),
@@ -157,12 +148,26 @@ class notify_game_results():
       'point': table_data[1]['total'],
       'player': 1
     }]
+
+    temp_graph_data = list(graph_data)
+    for i in range(5 - len(temp_graph_data)):
+      temp_graph_data.append(0)
+    
     response_data = {
       'table': table_data,
       'lineGraph': graph,
-      'chartGraph': {},
-      'leagueList': league_list
+      'chartGraph': {
+          'labels': ['week 1', 'week 2', 'week 3', 'week 4', 'week 5'],
+          'data': [{'name': 'League', 'data': league_avg_graph}, {'name': '5 Weeks', 'data': temp_graph_data}]
+      },
+      'leagueList': league_list,
+      'leagueInfo': {
+            'name': self.league_name, 
+            'startDate': self.start_date.strftime("%Y-%m-%d"), 
+            'end_date': self.end_date.strftime("%Y-%m-%d")
+            }
     }
+
 
     # print(response_data)
     return response_data

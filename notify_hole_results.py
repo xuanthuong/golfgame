@@ -38,7 +38,14 @@ def get_hole_results(params):
     hole_data['TTL_DIST_NO'] = round(sum(distance),2)
 
     response_data.append(hole_data)
-  return response_data
+
+  return {'data': response_data, 
+          'leagueInfo': {
+            'name': params['league_name'], 
+            'startDate': params['start_date'].strftime("%Y-%m-%d"), 
+            'end_date': params['end_date'].strftime("%Y-%m-%d")
+            }
+          }
 
 def get_hole_details(hole_id):
   DB_URL = get_DB_URL()

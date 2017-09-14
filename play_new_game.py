@@ -68,7 +68,7 @@ class play_game:
       'WK_DY': week_day[str(dt.datetime.today().weekday())],
       'GRP_TP': "N",
       'WRKR_1_ID': 1,
-      'WRKR_2_ID': 2,
+      'WRKR_2_ID': 1,
       'SCRE_NO': game_data['HoleScore']
     }
     hole_id = hol.insert_to(hole_data)

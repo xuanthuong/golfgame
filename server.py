@@ -106,11 +106,12 @@ def notify_hole_results():
   leage_name = params['leagename']
   start_date = dt.date(2017, 9, 11)
   end_date = dt.date(2017, 9, 15)
+  worker_id = 1 # Get from username
   parse_params = {
     'league_name': leage_name,
     'start_date': dt.date(2017, 9, 11),
     'end_date': dt.date(2017, 9, 15),
-    'worker_id': 1
+    'worker_id': worker_id
   }
   res = get_hole_results(parse_params)
   if res:
@@ -141,9 +142,10 @@ def notify_game_results_api():
   leage_name = params['leagename']
   start_date = dt.date(2017, 9, 11)
   end_date = dt.date(2017, 9, 15)
+  worker_id = 1
 
   if user_name:
-    gm_result = notify_game_results(leage_name, start_date, end_date, 1)
+    gm_result = notify_game_results(leage_name, start_date, end_date, worker_id)
     game_results = gm_result.call_cal_game_results(gm_result)
 
   else:
