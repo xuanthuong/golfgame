@@ -25,10 +25,16 @@ class sqlprocedure():
     result = self.session.execute(query).fetchall()
     return result
 
-  def get_game_results(self, params):
-    query = "call get_game_results({0}, '{1}', '{2}', '{3}')" \
+  def get_best_game_results_by_day(self, params, day):
+    query = "call get_best_game_results_by_day({0}, '{1}', '{2}', '{3}', '{4}')" \
             .format(params['worker_id'], params['league_name'], 
-                    params['start_date'], params['end_date'])
+                    params['start_date'], params['end_date'], day)
+    return self.call_procedure(query)
+
+  def get_all_game_results_by_day(self, params, day):
+    query = "call get_all_game_results_by_day({0}, '{1}', '{2}', '{3}', '{4}')" \
+            .format(params['worker_id'], params['league_name'], 
+                    params['start_date'], params['end_date'], day)
     return self.call_procedure(query)
 
   def get_avg_leage_point(self, league_name):

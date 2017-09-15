@@ -16,12 +16,14 @@ class notify_game_results():
     self.start_date = start_date
     self.end_date = end_date
     self.worker_id = worker_id
+    self.week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+    self.num_weeks = 5
 
   def _get_5_weeks_day(self):
     weeks_list = []
     start_date = self.start_date
     end_date = self.end_date
-    for i in range(5):
+    for i in range(self.num_weeks):
       weeks_list.append({
         'league_name': self.league_name,
         'start_date': start_date,
@@ -34,75 +36,97 @@ class notify_game_results():
 
   def _get_5_weeks_results(self):
     weeks = self._get_5_weeks_day()
-    results = []
+    # results = []
     if weeks:
-      for wk in weeks:
-        temp = sql_proc.get_game_results(wk)
-        results.append(temp)
-      return results
+      week_res = {}
+      for i in range(len(weeks)):
+        wk = 'week_' + str(i+1)
+        day_res = {}
+        for day in self.week_days:
+          day_res[day] = sql_proc.get_all_game_results_by_day(weeks[i], day)
+        week_res[wk] = day_res
+      return week_res
 
   def _get_5_weeks_avg(self):
     results = self._get_5_weeks_results()
+    res_data = {}
+    week_avg = []
+    five_week_trend = []
     if results:
-      res_data = []
-      for i in range(len(results)):
-        temp_week = results[i]
-        if temp_week:
-          temp_week_obj = {}
-          cur_week = 'week_' + str(i+1)
-          temp_week_obj[cur_week] = {}
-          total = 0
-          for j in range(len(temp_week)):
-            temp_hole = temp_week[j]
-            if temp_hole:
-              temp_week_obj[cur_week]['hole_' + str(j+1)] = temp_hole['SCRE_NO']
-              total += temp_hole['SCRE_NO']
-          temp_week_obj[cur_week]['total'] = total
-    
-          res_data.append(temp_week_obj)
-      return res_data
+      for day in self.week_days:
+        score = 0
+        count = 0
+        temp = []
+        for i in range(len(results)):
+          wk = 'week_' + str(i+1)
+          sum_score = results[wk][day][0]['SUM_SCRE_NO']
+          total_times = results[wk][day][0]['CNT']
+          if sum_score:
+            score += results[wk][day][0]['SUM_SCRE_NO']
+          if total_times:
+            count += results[wk][day][0]['CNT']
 
-  def _get_game_result_of_current_week(self):
+          if sum_score and total_times:
+            temp.append(sum_score / total_times)
+
+        if count > 0:
+          res_data[day] = round(score / count, 2)
+
+        week_avg.append(temp)
+
+      for j in range(len(week_avg[0])):
+        tmp = 0
+        for i in range(len(week_avg)):
+          tmp += week_avg[i][j]
+        five_week_trend.append(tmp)
+
+    return res_data, five_week_trend
+
+  def _get_best_game_result_by_week(self):
     params = {
       'league_name': self.league_name,
       'start_date': self.start_date,
       'end_date': self.end_date,
       'worker_id': self.worker_id
     }
-    game_result = sql_proc.get_game_results(params)
+    game_result = {}
+    for day in self.week_days:
+      day_result = sql_proc.get_best_game_results_by_day(params, day)
+      game_result[day] = day_result[0]
     return game_result
 
 
-  def call_cal_game_results(self, gm_result):
+  def call_cal_game_results(self, game_result_obj):
 
     table_data = []
     par = {}
     point = {}
     league_avg = {}
     five_week_avg = {}
-    temp = {}
 
+    temp_obj = {'Mon': 'hole_1', 'Tue': 'hole_2', 'Wed': 'hole_3', 'Thu': 'hole_4', 'Fri': 'hole_5'}
     # Game results
-    game_result = gm_result._get_game_result_of_current_week()
-    for i in range(len(game_result)):
-      hole = 'hole_' + str(i+1)
-      par[hole] = int(game_result[i]['HOLE_TP'][-1])
-      temp[hole] = int(game_result[i]['SCRE_NO'])
-      temp_1 = temp[hole] - par[hole]
-      if temp_1 >= 0:
-        point[hole] = "{0}(+{1})".format(str(temp[hole]), str(temp_1))
-      else:
-        point[hole] = "{0}({1})".format(str(temp[hole]), str(temp_1))
-    par['total'] = sum(par.values())
-    point['total'] = sum(temp.values())
-    par['hole'] = 'Par'
-    point['hole'] = 'Point'
+    game_result = game_result_obj._get_best_game_result_by_week()
+    temp_point = {}
+    for day, value in game_result.items():
+      hole = temp_obj[day]
+      par[hole] = int(value['HOLE_TP'][-1])
+      temp_point[hole] = int(value['SCRE_NO'])
 
-    temp_2 = point['total'] - par['total']
-    if temp_2 >= 0:
-      point['total'] = "{0}(+{1})".format(str(point['total']), str(temp_2))
+      temp = temp_point[hole] - par[hole]
+      if temp >= 0:
+        point[hole] = "{0}(+{1})".format(str(temp_point[hole]), str(temp))
+      else:
+        point[hole] = "{0}({1})".format(str(temp_point[hole]), str(temp))
+
+    par['total'] = sum(par.values())
+
+    point['total'] = sum(temp_point.values())
+    temp = point['total'] - par['total']
+    if temp >= 0:
+      point['total'] = "{0}(+{1})".format(str(point['total']), str(temp))
     else:
-      point['total'] = "{0}({1})".format(str(point['total']), str(temp_2))
+      point['total'] = "{0}({1})".format(str(point['total']), str(temp))
 
     # League average
     lg_avg = sql_proc.get_avg_leage_point(self.league_name)
@@ -110,20 +134,15 @@ class notify_game_results():
       hole = 'hole_' + str(i+1)
       league_avg[hole] = round(lg_avg[0][hole], 2)
     league_avg['total'] = sum(league_avg.values())
-    league_avg['hole'] = 'League Avg.'
 
     # 5 weeks average
-    results = gm_result._get_5_weeks_avg()
-    for j in range(5):
-      hole = 'hole_' + str(j+1)
-      mytemp = []
-      graph_data = []
-      for i in range(len(results)):
-        week = 'week_' + str(i+1)
-        mytemp.append(results[i][week][hole])
-        graph_data.append(results[i][week]['total'])
-      five_week_avg[hole] = round((sum(mytemp) / len(mytemp)), 2)
+    five_week_avg, five_week_trend = game_result_obj._get_5_weeks_avg()
     five_week_avg['total'] = sum(five_week_avg.values())
+    
+    # Column Names
+    par['hole'] = 'Par'
+    point['hole'] = 'Point'
+    league_avg['hole'] = 'League Avg.'
     five_week_avg['hole'] = '5 Weeks Avg.'
 
     table_data.append(par)
@@ -133,7 +152,7 @@ class notify_game_results():
 
     graph = {
       'labels': ['week 1', 'week 2', 'week 3', 'week 4', 'week 5'],
-      'data': [{'name': '5 Weeks Trend', 'data': graph_data}]
+      'data': [{'name': '5 Weeks Trend', 'data': five_week_trend}]
     }
 
     league_list = [{
@@ -144,14 +163,14 @@ class notify_game_results():
       'player': 1
     }]
 
-    temp_graph_data = list(graph_data)
+    temp_graph_data = list(five_week_trend)
     for i in range(5 - len(temp_graph_data)):
       temp_graph_data.append(0)
 
     league_avg_graph = []
-    for i in range(len(graph_data)):
+    for i in range(len(five_week_trend)):
       league_avg_graph.append(league_avg['total'])
-    for i in range(5 - len(graph_data)):
+    for i in range(5 - len(five_week_trend)):
       league_avg_graph.append(0)
     
     response_data = {
