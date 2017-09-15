@@ -131,11 +131,6 @@ class notify_game_results():
     table_data.append(league_avg)
     table_data.append(five_week_avg)
 
-
-    league_avg_graph = []
-    for i in range(5):
-      league_avg_graph.append(league_avg['total'])
-
     graph = {
       'labels': ['week 1', 'week 2', 'week 3', 'week 4', 'week 5'],
       'data': [{'name': '5 Weeks Trend', 'data': graph_data}]
@@ -152,6 +147,12 @@ class notify_game_results():
     temp_graph_data = list(graph_data)
     for i in range(5 - len(temp_graph_data)):
       temp_graph_data.append(0)
+
+    league_avg_graph = []
+    for i in range(len(graph_data)):
+      league_avg_graph.append(league_avg['total'])
+    for i in range(5 - len(graph_data)):
+      league_avg_graph.append(0)
     
     response_data = {
       'table': table_data,

@@ -1,49 +1,49 @@
 {
     "Par3": {
       "DRV": {
-        "APR": "boy_drive.gif",
-        "BUK": "boy_bad_shot.gif",
-        "WAT": "boy_bad_shot.gif",
-        "RUF": "boy_bad_shot.gif",
-        "END": "boy_victory.gif"
+        "APR": "DRV_APR.jpg",
+        "BUK": "DRV_BUK.jpg",
+        "WAT": "DRV_WAT.jpg",
+        "RUF": "DRV_RUF.jpg",
+        "END": "DRV_END.jpg"
       },
       "APR": {
-        "APR": "boy_putt.gif",
-        "BUK": "boy_bad_shot.gif",
-        "WAT": "boy_bad_shot.gif",
-        "RUF": "boy_bad_shot.gif",
-        "PUT": "boy_putt.gif",
-        "END": "boy_victory.gif"
+        "APR": "APR_APR.jpg",
+        "BUK": "APR_APR.jpg",
+        "WAT": "APR_APR.jpg",
+        "RUF": "APR_APR.jpg",
+        "PUT": "APR_APR.jpg",
+        "END": "APR_APR.jpg"
       },
       "PUT": {
-        "PUT": "boy_putt.gif",
-        "END": "boy_victory.gif",
-        "BUK": "boy_bad_shot.gif",
-        "RUF": "boy_bad_shot.gif"
+        "PUT": "PUT_PUT.jpg",
+        "END": "PUT_PUT.jpg",
+        "BUK": "PUT_PUT.jpg",
+        "RUF": "PUT_PUT.jpg"
       },
       "WAT": {
-        "APR": "boy_putt.gif",
-        "RUF": "boy_bad_shot.gif"
+        "APR": "WAT_WAT.jpg",
+        "RUF": "WAT_WAT.jpg"
       },
       "BUK": {
-        "BUK": "boy_bad_shot.gif",
-        "APR": "boy_putt.gif",
-        "RUF": "boy_bad_shot.gif"
+        "BUK": "BUK_BUK.jpg",
+        "APR": "BUK_BUK.jpg",
+        "RUF": "BUK_BUK.jpg"
       },
       "RUF": {
-        "RUF": "boy_bad_shot.gif",
-        "BUK": "boy_bad_shot.gif",
-        "APR": "boy_putt.gif"
+        "RUF": "RUF_RUF.jpg",
+        "BUK": "RUF_RUF.jpg",
+        "APR": "RUF_RUF.jpg"
       }
     },
     "Par4": {
       "DRV": {
-        "SEC": "boy_drive.gif",
-        "APR": "boy_drive.gif",
-        "BUK": "boy_drive.gif",
-        "WAT": "boy_drive.gif",
-        "RUF": "boy_drive.gif",
-        "END": "boy_drive.gif"
+        "SEC": "DRV_APR.jpg",
+        "APR": "DRV_APR.jpg",
+        "BUK": "DRV_BUK.jpg",
+        "WAT": "DRV_WAT.jpg",
+        "RUF": "DRV_RUF.jpg",
+        "END": "DRV_END.jpg"
       },
       "SEC": {
         "APR": "boy_drive.gif",
@@ -61,10 +61,10 @@
         "END": "boy_drive.gif"
       },
       "PUT": {
-        "PUT": "boy_drive.gif",
-        "END": "boy_drive.gif",
-        "BUK": "boy_drive.gif",
-        "RUF": "boy_drive.gif"
+        "PUT": "PUT_PUT.jpg",
+        "END": "PUT_PUT.jpg",
+        "BUK": "PUT_PUT.jpg",
+        "RUF": "PUT_PUT.jpg"
       },
       "WAT": {
         "SEC": "boy_drive.gif",
