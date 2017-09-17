@@ -72,10 +72,10 @@ class play_game:
     # player_id = pler.insert_to(player_obj) # select from play_group
 
     hole_data = {
-      'PLER_ID': 3 ,
+      'PLER_ID': 1 ,
       'HOLE_TP': self.hole,
-      'HOLE_DT': dt.datetime(2017, 9, 15, 10, 10, 10).strftime("%Y/%m/%d %H:%M:%S"), # dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
-      'WK_DY': week_day[str(dt.datetime(2017, 9, 15, 10, 10, 10).weekday())],
+      'HOLE_DT': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"), # dt.datetime(2017, 9, 15, 10, 10, 10).strftime("%Y/%m/%d %H:%M:%S"),
+      'WK_DY': week_day[str(dt.datetime.today().weekday())],
       'GRP_TP': "N",
       'WRKR_1_ID': self.user_id,
       'WRKR_2_ID': self.user_id,
