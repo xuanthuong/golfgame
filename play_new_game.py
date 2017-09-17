@@ -12,6 +12,7 @@ from models.hole_history import hole_history
 from models.hole import hole
 from models.worker_level import worker_level
 from models.worker import worker
+from models.player import player
 import random as rd
 
 DB_URL = get_DB_URL()
@@ -47,7 +48,7 @@ class play_game:
     self.game_type = game_type
     wk = worker(DB_URL)
     if user_id == 0:
-      self.user_id = wk.get_by_username(self.user_name)
+      self.user_id = wk.get_by_username(user_name.lower())
     else:
       self.user_id = user_id
     if not self.user_id:
@@ -58,17 +59,26 @@ class play_game:
 
   def save_game(self, game_data):
     hole_hist = hole_history(DB_URL)
-
     hol = hole(DB_URL)
+    pler = player(DB_URL)
+
+    # player_obj = {
+    #   "GAME_ID": 1,
+    #   "PLER_TP": 'S',
+    #   "SCRE_NO": game_data['HoleScore'],
+    #   "GRD_NO": 1,
+    #   "TEAM_ID": 1
+    # }
+    # player_id = pler.insert_to(player_obj) # select from play_group
 
     hole_data = {
-      'PLER_ID': self.user_id ,
+      'PLER_ID': 3 ,
       'HOLE_TP': self.hole,
-      'HOLE_DT': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
-      'WK_DY': week_day[str(dt.datetime.today().weekday())],
+      'HOLE_DT': dt.datetime(2017, 9, 15, 10, 10, 10).strftime("%Y/%m/%d %H:%M:%S"), # dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+      'WK_DY': week_day[str(dt.datetime(2017, 9, 15, 10, 10, 10).weekday())],
       'GRP_TP': "N",
-      'WRKR_1_ID': 1,
-      'WRKR_2_ID': 1,
+      'WRKR_1_ID': self.user_id,
+      'WRKR_2_ID': self.user_id,
       'SCRE_NO': game_data['HoleScore']
     }
     hole_id = hol.insert_to(hole_data)
@@ -101,7 +111,6 @@ class play_game:
       i += 1
 
     for rec in result_hist:
-      # hole_hist_results.append(rec)
       hole_hist.insert_to(rec)
     
     hole_data["TTL_DIST_NO"] = round(game_data['totalDistance'],3)

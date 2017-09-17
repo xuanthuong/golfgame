@@ -13,6 +13,7 @@ from models.worker_level import worker_level
 from models.worker import worker
 from models.work_history import work_history
 from models.game import game
+from models.ranking import rank
 from notify_hole_results import get_hole_results, get_hole_details
 import datetime as dt
 from notify_game_results import notify_game_results
@@ -106,7 +107,8 @@ def notify_hole_results():
   leage_name = params['leagename']
   start_date = dt.date(2017, 9, 11)
   end_date = dt.date(2017, 9, 15)
-  worker_id = 1 # Get from username
+  wk = worker(DB_URL)
+  worker_id = wk.get_by_username(user_name)
   parse_params = {
     'league_name': leage_name,
     'start_date': dt.date(2017, 9, 11),
@@ -142,11 +144,12 @@ def notify_game_results_api():
   leage_name = params['leagename']
   start_date = dt.date(2017, 9, 11)
   end_date = dt.date(2017, 9, 15)
-  worker_id = 1
+  wk = worker(DB_URL)
+  worker_id = wk.get_by_username(user_name)
 
   if user_name:
-    gm_result = notify_game_results(leage_name, start_date, end_date, worker_id)
-    game_results = gm_result.call_cal_game_results(gm_result)
+    gm_result = notify_game_results(leage_name, start_date, end_date)
+    game_results = gm_result.call_cal_game_results(gm_result, worker_id)
 
   else:
     return "No user name", 200
@@ -161,11 +164,15 @@ def notify_ranking():
   end_date = dt.date(2017, 9, 15)
 
   if user_name:
-    rank_results = [{
-      'rank': 1,
-      'player': rd.choice(['Thuong Tran', 'Van Ngo', 'Khang Dong']),
-      'point': rd.randint(10, 20)
-    }]
+    rnk = rank(DB_URL)
+    ranking_obj = rnk.get_all()
+    rank_results = []
+    for r in ranking_obj:
+      rank_results.append({
+        'rank': r['RNK_NO'],
+        'player': r['WRKR_NM'],
+        'point': r['PNT_NO']
+      })
     return jsonify(rank_results), 200
 
   else:

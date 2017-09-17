@@ -37,4 +37,10 @@ class worker():
     r = self.connection.execute(s)
     for obj in r:
       return obj['WRKR_ID']
+
+  def get_username_by_id(self, user_id):
+    s = select([self.worker_tb]).where(self.worker_tb.c.WRKR_ID == user_id)
+    r = self.connection.execute(s)
+    for obj in r:
+      return obj['WRKR_NM']
   

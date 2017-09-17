@@ -7,19 +7,21 @@ from __future__ import division
 import datetime as dt
 from config import get_DB_URL
 from models.sqlprocedure import sqlprocedure
+from models.worker import worker
+from models.ranking import rank
 
+DB_URL = get_DB_URL()
+sql_proc = sqlprocedure(DB_URL)
 
-sql_proc = sqlprocedure(get_DB_URL())
 class notify_game_results():
-  def __init__(self, league_name, start_date, end_date, worker_id):
+  def __init__(self, league_name, start_date, end_date):
     self.league_name = league_name
     self.start_date = start_date
     self.end_date = end_date
-    self.worker_id = worker_id
     self.week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
     self.num_weeks = 5
 
-  def _get_5_weeks_day(self):
+  def _get_5_weeks_day(self, worker_id):
     weeks_list = []
     start_date = self.start_date
     end_date = self.end_date
@@ -28,14 +30,14 @@ class notify_game_results():
         'league_name': self.league_name,
         'start_date': start_date,
         'end_date': end_date,
-        'worker_id': self.worker_id
+        'worker_id': worker_id
       })
       start_date -= dt.timedelta(days=7)
       end_date -= dt.timedelta(days=7)
     return weeks_list
 
-  def _get_5_weeks_results(self):
-    weeks = self._get_5_weeks_day()
+  def _get_5_weeks_results(self, worker_id):
+    weeks = self._get_5_weeks_day(worker_id)
     # results = []
     if weeks:
       week_res = {}
@@ -47,8 +49,8 @@ class notify_game_results():
         week_res[wk] = day_res
       return week_res
 
-  def _get_5_weeks_avg(self):
-    results = self._get_5_weeks_results()
+  def _get_5_weeks_avg(self, worker_id):
+    results = self._get_5_weeks_results(worker_id)
     res_data = {}
     week_avg = []
     five_week_trend = []
@@ -82,12 +84,12 @@ class notify_game_results():
 
     return res_data, five_week_trend
 
-  def _get_best_game_result_by_week(self):
+  def _get_best_game_result_by_week(self, worker_id):
     params = {
       'league_name': self.league_name,
       'start_date': self.start_date,
       'end_date': self.end_date,
-      'worker_id': self.worker_id
+      'worker_id': worker_id
     }
     game_result = {}
     for day in self.week_days:
@@ -96,7 +98,7 @@ class notify_game_results():
     return game_result
 
 
-  def call_cal_game_results(self, game_result_obj):
+  def call_cal_game_results(self, game_result_obj, worker_id):
 
     table_data = []
     par = {}
@@ -106,7 +108,7 @@ class notify_game_results():
 
     temp_obj = {'Mon': 'hole_1', 'Tue': 'hole_2', 'Wed': 'hole_3', 'Thu': 'hole_4', 'Fri': 'hole_5'}
     # Game results
-    game_result = game_result_obj._get_best_game_result_by_week()
+    game_result = game_result_obj._get_best_game_result_by_week(worker_id)
     temp_point = {}
     for day, value in game_result.items():
       hole = temp_obj[day]
@@ -136,7 +138,7 @@ class notify_game_results():
     league_avg['total'] = sum(league_avg.values())
 
     # 5 weeks average
-    five_week_avg, five_week_trend = game_result_obj._get_5_weeks_avg()
+    five_week_avg, five_week_trend = game_result_obj._get_5_weeks_avg(worker_id)
     five_week_avg['total'] = sum(five_week_avg.values())
     
     # Column Names
@@ -155,14 +157,6 @@ class notify_game_results():
       'data': [{'name': '5 Weeks Trend', 'data': five_week_trend}]
     }
 
-    league_list = [{
-      'name': self.league_name,
-      'date': str(self.start_date) + " ~ " + str(self.end_date),
-      'winner': 'Thuong Tran',
-      'point': table_data[1]['total'],
-      'player': 1
-    }]
-
     temp_graph_data = list(five_week_trend)
     for i in range(5 - len(temp_graph_data)):
       temp_graph_data.append(0)
@@ -173,6 +167,50 @@ class notify_game_results():
     for i in range(5 - len(five_week_trend)):
       league_avg_graph.append(0)
     
+    # Decide winner 
+    league_list = [{
+      'name': self.league_name,
+      'date': str(self.start_date) + " ~ " + str(self.end_date),
+      'winner': 'unknow',
+      'point': 999,
+      'player': 1
+    }]
+
+    wk = worker(DB_URL)
+    rnk = rank(DB_URL)
+    rnk.delete_all()
+    temp_ranking = {}
+    num_players = 0
+    for i in range(1, 3):
+      temp_game_results = game_result_obj._get_best_game_result_by_week(i)
+      temp_point = {}
+      if temp_game_results:
+        for day, value in temp_game_results.items():
+          hole = temp_obj[day]
+          temp_point[hole] = int(value['SCRE_NO'])
+        total_points = sum(temp_point.values())
+
+        temp_worker_name = wk.get_username_by_id(i)
+        temp_ranking[temp_worker_name] = total_points
+
+        if total_points < league_list[0]['point']:
+          league_list[0]['point'] = total_points
+          league_list[0]['winner'] = temp_worker_name
+        num_players += 1
+
+    league_list[0]['player'] = num_players
+    temp_ranking = sorted(temp_ranking.items(), key=lambda x:x[1]) # sort by value of dict
+
+    for i in range(len(temp_ranking)):
+      rnk_obj = {
+        'LEAG_NM': self.league_name,
+        'RNK_NO': i + 1,
+        'WRKR_NM': temp_ranking[i][0],
+        'PNT_NO': temp_ranking[i][1]
+      }
+      rnk.insert_to(rnk_obj)
+
+    # Response data
     response_data = {
       'table': table_data,
       'lineGraph': graph,
@@ -187,7 +225,6 @@ class notify_game_results():
             'end_date': self.end_date.strftime("%Y-%m-%d")
             }
     }
-
 
     # print(response_data)
     return response_data

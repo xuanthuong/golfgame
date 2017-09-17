@@ -32,4 +32,6 @@ class game():
       is_valid = True
       if is_valid:
         ins_query = self.game.insert().values(data)
-        self.connection.execute(ins_query)
+        r = self.connection.execute(ins_query)
+        return r.lastrowid
+      

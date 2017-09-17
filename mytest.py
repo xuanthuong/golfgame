@@ -1,6 +1,5 @@
 # import os
 # import json
-# from play_new_game import play_game
 # from gen_work_history import gen_rand_work_history
 
 
@@ -71,12 +70,15 @@
 
 # # Insert some users to db
 # from models.worker import worker
-from models.worker_level import worker_level
 import datetime as dt
 import random as rd
-from models.game import game
+from models.worker_level import worker_level
 from models.league import league
+from models.game import game
 from models.player import player
+from models.hole import hole
+from models.hole_history import hole_history
+from play_new_game import play_game
 
 DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 # DB_URL = "mysql://gamification:123789@10.0.14.199/gamification-fwd"
@@ -182,14 +184,16 @@ DB_URL = "mysql://golf_user:dounets123!@localhost/golfgame"
 # print(wk_level.get_by_id(4))
 
 
-# # ####### Test playing game
-# hole = "Par3"
-# user_name = 'ThuongTran'
+# # # ####### Test playing game
+# hole = "Par5"
+# user_name = 'VanNgo'
 
 # game = play_game(hole, user_name)
 # game_data = game.start_game()
 # if game_data:
 #   print(game_data)
+
+
 
 
 # from rule import rule
