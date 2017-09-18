@@ -33,7 +33,7 @@ def verify():
       return "Verification token mismatch", 403
     return request.args["hub.challenge"], 200
 
-  return "Hello world", 200
+  return "This web server contains APIs for gamification", 200
 
 
 @app.route('/golfgame-api/getlevels', methods=['GET'])
