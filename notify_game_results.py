@@ -136,7 +136,7 @@ class notify_game_results():
     for i in range(len(lg_avg[0])):
       hole = 'hole_' + str(i+1)
       league_avg[hole] = round(lg_avg[0][hole], 2)
-    league_avg['total'] = sum(league_avg.values())
+    league_avg['total'] = round(sum(league_avg.values()), 2)
 
     # 5 weeks average
     five_week_avg, five_week_trend = game_result_obj._get_5_weeks_avg(worker_id)
