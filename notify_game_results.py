@@ -140,7 +140,7 @@ class notify_game_results():
 
     # 5 weeks average
     five_week_avg, five_week_trend = game_result_obj._get_5_weeks_avg(worker_id)
-    five_week_avg['total'] = sum(five_week_avg.values())
+    five_week_avg['total'] = round(sum(five_week_avg.values()), 2)
     
     # Column Names
     par['hole'] = 'Par'
