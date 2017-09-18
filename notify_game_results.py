@@ -12,6 +12,7 @@ from models.ranking import rank
 
 DB_URL = get_DB_URL()
 sql_proc = sqlprocedure(DB_URL)
+day_hole = {'Mon': 'hole_1', 'Tue': 'hole_2', 'Wed': 'hole_3', 'Thu': 'hole_4', 'Fri': 'hole_5'}
 
 class notify_game_results():
   def __init__(self, league_name, start_date, end_date):
@@ -72,7 +73,7 @@ class notify_game_results():
             temp.append(sum_score / total_times)
 
         if count > 0:
-          res_data[day] = round(score / count, 2)
+          res_data[day_hole[day]] = round(score / count, 2)
 
         week_avg.append(temp)
 
