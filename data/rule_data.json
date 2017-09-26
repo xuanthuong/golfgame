@@ -9,31 +9,31 @@
     },
     "approach": {
       "approach": 0.49,
-      "bunker": 0.49,
-      "water": 0.49,
-      "ruff": 0.49,
+      "bunker": 0.2,
+      "water": 0.2,
+      "ruff": 0.2,
       "putting": 0.5,
       "inhole": 0.01
     },
     "putting": {
       "putting": 0.5,
       "inhole": 0.5,
-      "bunker": 0.5,
-      "ruff": 0.5
+      "bunker": 0.1,
+      "ruff": 0.1
     },
     "water": {
       "approach": 0.9,
       "ruff": 0.1
     },
     "bunker": {
-      "bunker": 0.5,
-      "approach": 0.5,
-      "ruff": 0.5
+      "bunker": 0.2,
+      "approach": 0.7,
+      "ruff": 0.2
     },
     "ruff": {
-      "ruff": 0.5,
-      "bunker": 0.5,
-      "approach": 0.5
+      "ruff": 0.1,
+      "bunker": 0.2,
+      "approach": 0.7
     }
   },
   "Par4": {
@@ -55,30 +55,30 @@
     },
     "approach": {
       "putting": 0.5,
-      "bunker": 0.49,
-      "water": 0.49,
-      "ruff": 0.49,
+      "bunker": 0.2,
+      "water": 0.2,
+      "ruff": 0.2,
       "inhole": 0.01
     },
     "putting": {
       "putting": 0.5,
       "inhole": 0.5,
-      "bunker": 0.5,
-      "ruff": 0.5
+      "bunker": 0.2,
+      "ruff": 0.2
     },
     "water": {
-      "second_shot": 0.5,
-      "ruff": 0.5
+      "second_shot": 0.7,
+      "ruff": 0.2
     },
     "bunker": {
-      "bunker": 0.5,
-      "approach": 0.5,
-      "ruff": 0.5
+      "bunker": 0.1,
+      "approach": 0.7,
+      "ruff": 0.2
     },
     "ruff": {
-      "ruff": 0.5,
-      "bunker": 0.5,
-      "approach": 0.5
+      "ruff": 0.1,
+      "bunker": 0.2,
+      "approach": 0.7
     }
   },
   "Par5": {
@@ -107,17 +107,17 @@
       "ruff": 0.485
     },
     "approach": {
-      "putting": 0.5,
-      "bunker": 0.49,
-      "water": 0.49,
-      "ruff": 0.49,
+      "putting": 0.6,
+      "bunker": 0.2,
+      "water": 0.3,
+      "ruff": 0.2,
       "inhole": 0.01
     },
     "putting": {
       "putting": 0.5,
       "inhole": 0.5,
-      "bunker": 0.5,
-      "ruff": 0.5
+      "bunker": 0.2,
+      "ruff": 0.1
     },
     "water": {
       "second_shot": 0.9,
@@ -125,14 +125,14 @@
     },
     "bunker": {
       "third_shot": 0.5,
-      "approach": 0.01,
-      "bunker": 0.49,
-      "ruff": 0.49
+      "approach": 0.5,
+      "bunker": 0.2,
+      "ruff": 0.1
     },
     "ruff": {
       "third_shot": 0.5,
-      "ruff": 0.49,
-      "bunker": 0.49,
+      "ruff": 0.2,
+      "bunker": 0.2,
       "approach": 0.01
     }
   }
