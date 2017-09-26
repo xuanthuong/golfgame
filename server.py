@@ -8,7 +8,7 @@ from flask import Flask, request, jsonify
 from config import get_DB_URL
 from play_new_game import play_game
 import random as rd
-from gen_work_history import gen_rand_work_history
+from models.gen_work_history import gen_rand_work_history
 from models.worker_level import worker_level
 from models.worker import worker
 from models.work_history import work_history
